@@ -78,5 +78,3 @@ def stratified_random_sample(filepath):
 
     # CSV file was successfully made
     return True
-
-stratified_random_sample('Peru_2019_AudioMoth_Data_Full.csv')
