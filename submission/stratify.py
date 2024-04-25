@@ -2,14 +2,14 @@ import pandas as pd
 import re
 
 # Fastest runtime: 10.78 seconds
-def strafied_random_sample(filepath):
+def stratified_random_sample(filepath):
     # Load CSV file
     df = pd.read_csv(filepath)
 
     # Store original columns
     cols = df.columns
 
-    # Step 2: Drop rows that do not contain enough information.
+    # Drop rows that do not contain enough information.
 
     # Strata Level 1
     df.dropna(subset=['AudioMothCode'], how='all', inplace=True)
@@ -42,6 +42,7 @@ def strafied_random_sample(filepath):
             # Convert hours to a list for Hour column in df
             return hours['StartDateTime'].tolist()
         except:
+            # Dataframe is empty
             return []
     
     # Extract hours of each timestamp
@@ -62,7 +63,11 @@ def strafied_random_sample(filepath):
         f.write('AudioMothCode,AudioMothID,SourceFile,Directory,FileName,FileSize,Encoding,NumChannels,SampleRate,AvgBytesPerSec,BitsPerSample,StartDateTime,Duration,Error,Comment,Artist,FileCreateDate,FileType,FileTypeExtension,MIMEType\n')
         for code in validCodes:
             subset = df[(df['AudioMothCode'] == code)]
+
+            # Use ungrouped keys to perform stratified random sample for each Hour entry
             sampled = subset.groupby(by='Hour', group_keys=False).apply(lambda x: x.sample(n=1))
+
+            # Write entry to new file
             for index, line in sampled.iterrows():
                 entry = ','.join([str(line[col]) for col in cols])
                 f.write(entry + '\n')
