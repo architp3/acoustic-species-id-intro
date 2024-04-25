@@ -2,6 +2,7 @@ import pandas as pd
 import re
 
 # Fastest runtime: 10.78 seconds
+
 def stratified_random_sample(filepath):
     # Load CSV file
     df = pd.read_csv(filepath)
@@ -77,3 +78,5 @@ def stratified_random_sample(filepath):
 
     # CSV file was successfully made
     return True
+
+stratified_random_sample('Peru_2019_AudioMoth_Data_Full.csv')
